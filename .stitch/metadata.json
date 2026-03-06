@@ -1,0 +1,15 @@
+{
+  "name": "projects/17575812856587735131",
+  "projectId": "17575812856587735131",
+  "title": "П-0 Истории таких же — Landing Page",
+  "visibility": "PRIVATE",
+  "projectType": "PROJECT_DESIGN",
+  "origin": "STITCH",
+  "screens": {
+    "index": {
+      "stitch_project_id": "17575812856587735131",
+      "stitch_thumbnail": "https://lh3.googleusercontent.com/aida/AOfcidUFu03ClfhkrHz3oz792K12zTtfewYgbiXsH_17EmYbjBVPiltNftUeMwQXd10tjH4zBVTleBXKJEUV8XY1NQSVOqgFq3w6Cb5KzODte9W3K81chEmRe395xzWislPGHg1QW9qvPfHKaPc3gcEKTPUu3zGYSwGCtYpw45tKxAHCBJ00BN2r5ReCXo5d0Cyf9UgGL6zKPScxwDof15crJL4kc-cxupqJSU3p3Q9lYz-bbUaHA2R4l20G2iUe",
+      "note": "list_screens API returns empty; screen was generated (thumbnail appeared). HTML built manually from Stitch visual reference + design system."
+    }
+  }
+}

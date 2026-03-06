@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Истории таких же — DEAL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #031722;
+      --bg2: #06202f;
+      --accent: #feaf41;
+      --accent-hover: #ffbb5d;
+      --blue: #356077;
+      --text: #ffffff;
+      --text-muted: rgba(255,255,255,0.6);
+      --card-bg: rgba(53,96,119,0.2);
+      --card-border: rgba(96,120,131,0.3);
+      --light-accent: #ffe5ad;
+      --max-w: 1200px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* ── HEADER ─────────────────────────────── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(3,23,34,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      height: 104px;
+    }
+
+    .header-inner {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      height: 100%;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    .logo img {
+      height: 88px;
+      width: auto;
+      display: block;
+      align-self: center;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      height: 100%;
+    }
+
+    .header-cta {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: 100%;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      font-size: 14px;
+      transition: color .2s;
+    }
+    .nav-link:hover { color: var(--text); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 24px;
+      cursor: pointer;
+      transition: all .2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .btn-primary:hover { background: var(--accent-hover); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid rgba(255,255,255,0.5);
+    }
+    .btn-outline:hover { border-color: #fff; background: rgba(255,255,255,0.05); }
+
+    .btn-lg {
+      padding: 16px 36px;
+      font-size: 16px;
+    }
+
+    /* ── HERO ───────────────────────────────── */
+    .hero {
+      padding: 180px 0 110px;
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Анимированные фоновые блобы */
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      will-change: transform;
+    }
+    .hero-blob-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(254,175,65,0.09), transparent 70%);
+      top: -100px; right: 100px;
+      animation: blobFloat1 12s ease-in-out infinite;
+    }
+    .hero-blob-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(53,96,119,0.25), transparent 70%);
+      bottom: 0; right: 300px;
+      animation: blobFloat2 15s ease-in-out infinite;
+    }
+    .hero-blob-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(254,175,65,0.05), transparent 70%);
+      top: 50%; left: 30%;
+      animation: blobFloat3 18s ease-in-out infinite;
+    }
+
+    @keyframes blobFloat1 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33%     { transform: translate(-40px, 30px) scale(1.05); }
+      66%     { transform: translate(20px, -20px) scale(0.97); }
+    }
+    @keyframes blobFloat2 {
+      0%,100% { transform: translate(0,0); }
+      50%     { transform: translate(-30px, -40px); }
+    }
+    @keyframes blobFloat3 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50%     { transform: translate(40px, 20px) scale(1.1); }
+    }
+
+    /* Точечная сетка */
+    .hero-dots {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: radial-gradient(ellipse 70% 90% at 75% 50%, black, transparent);
+      -webkit-mask-image: radial-gradient(ellipse 70% 90% at 75% 50%, black, transparent);
+      pointer-events: none;
+    }
+
+    /* Параллакс-слой (управляется JS) */
+    .hero-parallax {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 460px;
+      gap: 72px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+
+    .hero-content { max-width: 100%; }
+
+    /* ── ПЕРСОНАЖИ (правая колонка) ──────────── */
+    .personas {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .persona-card {
+      background: rgba(6, 28, 42, 0.8);
+      border: 1px solid rgba(96,120,131,0.25);
+      border-radius: 18px;
+      padding: 20px;
+      backdrop-filter: blur(12px);
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(24px);
+      transition:
+        border-color .35s,
+        box-shadow .35s,
+        transform .35s;
+    }
+
+    /* Анимация входа с задержкой */
+    .persona-card.visible { opacity: 1; transform: translateY(0); }
+    .persona-card:nth-child(1) { transition-delay: 0.1s; }
+    .persona-card:nth-child(2) { transition-delay: 0.25s; }
+    .persona-card:nth-child(3) { transition-delay: 0.4s; }
+    .persona-card:nth-child(4) { transition-delay: 0.55s; }
+
+    .persona-card:hover {
+      border-color: rgba(254,175,65,0.45);
+      box-shadow: 0 0 32px rgba(254,175,65,0.08), 0 8px 32px rgba(0,0,0,0.3);
+      transform: translateY(-4px) !important;
+    }
+
+    /* Мерцающая полоска сверху при ховере */
+    .persona-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity .35s;
+    }
+    .persona-card:hover::before { opacity: 1; }
+
+    .persona-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .persona-ava {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .persona-ava::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(254,175,65,0.3);
+    }
+
+    .p1 { background: linear-gradient(135deg, #0f3d56, #1a5570); color: #feaf41; }
+    .p2 { background: linear-gradient(135deg, #2d1f0f, #4a3318); color: #ffcc70; }
+    .p3 { background: linear-gradient(135deg, #0f2d1a, #1a4a28); color: #6fcf8a; }
+    .p4 { background: linear-gradient(135deg, #1f0f2d, #321a4a); color: #b06fd4; }
+
+    .persona-info { flex: 1; min-width: 0; }
+    .persona-name {
+      font-size: 14px; font-weight: 700;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .persona-role {
+      font-size: 11px; color: var(--text-muted);
+      margin-top: 2px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* Внутренний монолог */
+    .persona-thought {
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.8);
+      font-style: italic;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.04);
+      border-left: 2px solid rgba(254,175,65,0.4);
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 12px;
+    }
+
+    /* Статус-строка */
+    .persona-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .status-dot.seeking  { background: #f59e0b; }
+    .status-dot.thinking { background: #60a5fa; }
+    .status-dot.afraid   { background: #f87171; }
+    .status-dot.decided  { background: #4ade80; }
+
+    /* Плашка «читают сейчас» */
+    .live-strip {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: rgba(254,175,65,0.06);
+      border: 1px solid rgba(254,175,65,0.18);
+      border-radius: 12px;
+      grid-column: 1 / -1;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity .5s .7s, transform .5s .7s;
+    }
+    .live-strip.visible { opacity: 1; transform: translateY(0); }
+
+    .live-dot {
+      width: 8px; height: 8px;
+      background: #4ade80;
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: livePulse 2s ease-in-out infinite;
+    }
+    @keyframes livePulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(74,222,128,0.4); }
+      50%      { box-shadow: 0 0 0 5px rgba(74,222,128,0); }
+    }
+
+    .live-text { font-size: 12.5px; color: rgba(255,255,255,0.7); }
+    .live-text strong { color: #fff; font-weight: 600; }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(254,175,65,0.12);
+      border: 1px solid rgba(254,175,65,0.25);
+      border-radius: 30px;
+      padding: 6px 16px;
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 28px;
+    }
+
+    .hero-label::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    h1 {
+      font-size: 44px;
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin-bottom: 24px;
+    }
+
+    h1 span { color: var(--accent); }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 40px;
+      max-width: 560px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .hero-fine {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .hero-fine span {
+      color: rgba(255,255,255,0.4);
+      margin: 0 6px;
+    }
+
+    /* ── STATS ──────────────────────────────── */
+    .stats {
+      background: rgba(53,96,119,0.15);
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      padding: 32px 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+
+    .stat-item {
+      padding: 0 40px;
+      border-right: 1px solid var(--card-border);
+    }
+    .stat-item:first-child { padding-left: 0; }
+    .stat-item:last-child { border-right: none; }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .stat-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── STORY CARD ─────────────────────────── */
+    .story-section {
+      padding: 96px 0;
+    }
+
+    .section-eyebrow {
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: 36px;
+      font-weight: 500;
+      letter-spacing: -0.5px;
+      margin-bottom: 48px;
+    }
+
+    .story-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(254,175,65,0.3);
+      border-radius: 20px;
+      padding: 48px;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .story-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .avatar {
+      width: 56px; height: 56px;
+      background: linear-gradient(135deg, var(--blue), #1a4a60);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      font-weight: 600;
+      border: 2px solid rgba(254,175,65,0.4);
+      flex-shrink: 0;
+    }
+
+    .story-name {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .story-title {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .story-quote {
+      font-size: 17px;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.85);
+      font-style: italic;
+      border-left: 3px solid var(--accent);
+      padding-left: 20px;
+      margin-bottom: 28px;
+    }
+
+    .story-result {
+      background: rgba(254,175,65,0.1);
+      border: 1px solid rgba(254,175,65,0.25);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+    }
+
+    .story-result-label {
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .story-result-value {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .story-result-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .story-photo {
+      background: linear-gradient(160deg, #0d3347 0%, #1a4a60 100%);
+      border-radius: 16px;
+      aspect-ratio: 3/4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      border: 1px solid var(--card-border);
+      overflow: hidden;
+    }
+
+    .story-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ── FEARS ──────────────────────────────── */
+    .fears-section {
+      padding: 96px 0;
+      background: linear-gradient(180deg, transparent, rgba(53,96,119,0.08), transparent);
+    }
+
+    .fears-header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .fears-sub {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 56px;
+      font-size: 16px;
+    }
+
+    .fears-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .fear-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 36px 28px;
+      text-align: center;
+      transition: border-color .2s, transform .2s;
+    }
+    .fear-card:hover {
+      border-color: rgba(254,175,65,0.3);
+      transform: translateY(-4px);
+    }
+
+    .fear-icon {
+      width: 56px; height: 56px;
+      background: rgba(254,175,65,0.1);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      margin: 0 auto 20px;
+    }
+
+    .fear-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .fear-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .fears-conclusion {
+      text-align: center;
+      font-size: 17px;
+      color: var(--text-muted);
+      padding: 24px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+    }
+
+    .fears-conclusion strong { color: var(--text); }
+
+    /* ── TIMELINE ───────────────────────────── */
+    .timeline-section {
+      padding: 96px 0;
+    }
+
+    .timeline-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .timeline {
+      max-width: 680px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 32px;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: var(--card-border);
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 28px;
+      padding-bottom: 36px;
+      position: relative;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+
+    .timeline-dot {
+      width: 64px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .dot {
+      width: 14px; height: 14px;
+      background: var(--accent);
+      border-radius: 50%;
+      border: 3px solid var(--bg);
+      box-shadow: 0 0 0 1px var(--accent);
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .day-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .timeline-content {
+      padding-top: 0;
+    }
+
+    .timeline-content h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .timeline-content p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .timeline-badge {
+      display: inline-block;
+      background: rgba(254,175,65,0.12);
+      color: var(--accent);
+      border-radius: 30px;
+      padding: 3px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    .timeline-special {
+      background: var(--card-bg);
+      border: 1px solid rgba(254,175,65,0.2);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 0;
+    }
+
+    /* ── FINAL CTA ──────────────────────────── */
+    .cta-section {
+      padding: 100px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(254,175,65,0.06) 0%, transparent 70%);
+    }
+
+    .cta-section .container { position: relative; }
+
+    .cta-section h2 {
+      font-size: 44px;
+      margin-bottom: 16px;
+    }
+
+    .cta-section p {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 48px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-note {
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ── FOOTER ─────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 32px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-muted);
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── TELEGRAM ICON SVG ──────────────────── */
+    .icon-tg { width: 18px; height: 18px; fill: currentColor; }
+    .icon-mail { width: 16px; height: 16px; fill: currentColor; }
+
+    /* ── RESPONSIVE ─────────────────────────── */
+    @media (max-width: 1100px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-proof { display: none; }
+    }
+
+    @media (max-width: 900px) {
+      h1 { font-size: 38px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--card-border); padding: 0 0 20px; }
+      .stat-item:nth-child(2), .stat-item:last-child { border-bottom: none; }
+      .story-card { grid-template-columns: 1fr; }
+      .story-photo { display: none; }
+      .fears-grid { grid-template-columns: 1fr; }
+      .cta-section h2 { font-size: 32px; }
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 0 20px; }
+      h1 { font-size: 32px; letter-spacing: -0.5px; }
+      .hero { padding: 120px 0 80px; }
+      .header-nav { display: none; }
+      .header-inner {
+        grid-template-columns: 1fr auto;
+      }
+      .header-cta a {
+        font-size: 12px !important;
+        padding: 8px 14px !important;
+        white-space: nowrap;
+      }
+      .logo img { height: 52px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ──────────────────────────────────── -->
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <img src="logo.png" alt="DEAL">
+      </a>
+      <nav class="header-nav">
+        <a href="#program" class="nav-link">О программе</a>
+        <a href="#stories" class="nav-link">Истории</a>
+      </nav>
+      <div class="header-cta">
+        <a href="#cta" class="btn btn-primary" style="padding:10px 24px;font-size:14px;font-weight:600;display:flex;align-items:center;">Получить бесплатно</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── HERO ────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <!-- Фоновые анимированные блобы -->
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-blob hero-blob-3"></div>
+  <div class="hero-dots" id="heroDots"></div>
+
+  <div class="container">
+    <div class="hero-grid">
+
+      <!-- Левая колонка: текст + CTA -->
+      <div class="hero-content">
+        <div class="hero-label">Бесплатно · 7 дней · 10 историй</div>
+        <h1>10 историй мужчин 43–50,<br>которые ушли<br><span style="white-space:nowrap;">из найма во франшизу</span></h1>
+        <p class="hero-sub">С реальными цифрами, страхами и ошибками. Не мотивация — факты. Узнайте, как топ-менеджеры, руководители и обычные специалисты меняют стабильность на своё дело.</p>
+        <div class="hero-cta">
+          <a href="#cta" class="btn btn-primary btn-lg">
+            <svg class="icon-tg" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+            Получить в Telegram
+          </a>
+          <a href="#cta" class="btn btn-outline btn-lg">
+            <svg class="icon-mail" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            Получить на email
+          </a>
+        </div>
+        <p class="hero-fine">Бесплатно <span>·</span> Без продаж <span>·</span> 10 историй за 7 дней</p>
+      </div>
+
+      <!-- Правая колонка: персонажи для идентификации -->
+      <div class="personas" id="personas">
+
+        <!-- Персонаж 1 -->
+        <div class="persona-card">
+          <div class="persona-header">
+            <div class="persona-ava p1">А</div>
+            <div class="persona-info">
+              <div class="persona-name">Алексей, 47</div>
+              <div class="persona-role">CFO · банк · 24 года</div>
+            </div>
+          </div>
+          <div class="persona-thought">
+            «Мне 47. Если уволят — кто возьмёт финдира в 50?»
+          </div>
+          <div class="persona-status">
+            <div class="status-dot seeking"></div>
+            Ищет выход, пока не поздно
+          </div>
+        </div>
+
+        <!-- Персонаж 2 -->
+        <div class="persona-card">
+          <div class="persona-header">
+            <div class="persona-ava p2">С</div>
+            <div class="persona-info">
+              <div class="persona-name">Сергей, 44</div>
+              <div class="persona-role">Директор по развитию · 19 лет</div>
+            </div>
+          </div>
+          <div class="persona-thought">
+            «Слышал слово "оптимизация" на совете директоров. Не сплю третью ночь.»
+          </div>
+          <div class="persona-status">
+            <div class="status-dot afraid"></div>
+            Боится, но молчит
+          </div>
+        </div>
+
+        <!-- Персонаж 3 -->
+        <div class="persona-card">
+          <div class="persona-header">
+            <div class="persona-ava p3">М</div>
+            <div class="persona-info">
+              <div class="persona-name">Михаил, 48</div>
+              <div class="persona-role">Гл. инженер · завод · 23 года</div>
+            </div>
+          </div>
+          <div class="persona-thought">
+            «Давление 155/100. Врач сказал: смените работу. Легко сказать...»
+          </div>
+          <div class="persona-status">
+            <div class="status-dot thinking"></div>
+            Думает уже два года
+          </div>
+        </div>
+
+        <!-- Персонаж 4 -->
+        <div class="persona-card">
+          <div class="persona-header">
+            <div class="persona-ava p4">Д</div>
+            <div class="persona-info">
+              <div class="persona-name">Дмитрий, 45</div>
+              <div class="persona-role">Опер. директор · 21 год</div>
+            </div>
+          </div>
+          <div class="persona-thought">
+            «Понял, что карьерный потолок — это навсегда. Хочу что-то своё.»
+          </div>
+          <div class="persona-status">
+            <div class="status-dot decided"></div>
+            Готов действовать
+          </div>
+        </div>
+
+        <!-- Живая полоска -->
+        <div class="live-strip" id="liveStrip">
+          <div class="live-dot"></div>
+          <div class="live-text"><strong>847 человек</strong> с похожей историей уже читают серию</div>
+        </div>
+
+      </div><!-- /personas -->
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ────────────────────────────────────── -->
+<div class="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-label">Историй</div>
+        <div class="stat-value">10</div>
+        <div class="stat-desc">мужчин 43–48 лет</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Вложения</div>
+        <div class="stat-value">1.7М₽</div>
+        <div class="stat-desc">средние по 6 героям</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Окупаемость</div>
+        <div class="stat-value">9 мес</div>
+        <div class="stat-desc">средний срок возврата</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Доход</div>
+        <div class="stat-value">310К/мес</div>
+        <div class="stat-desc">через 12 месяцев</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURED STORY ────────────────────────────── -->
+<section class="story-section" id="stories">
+  <div class="container">
+    <div class="section-eyebrow">Реальные примеры</div>
+    <h2>Первая история — Андрей, 47 лет</h2>
+    <div class="story-card">
+      <div>
+        <div class="story-meta">
+          <div class="avatar">А</div>
+          <div>
+            <div class="story-name">Андрей, 47 лет</div>
+            <div class="story-title">Финансовый директор банка · 22 года в найме</div>
+          </div>
+        </div>
+        <p class="story-quote">
+          «Давление 150/95. В марте умер коллега — 48 лет, инфаркт, соседний кабинет. В тот вечер я измерил давление и понял: я следующий, если ничего не изменю.»
+        </p>
+        <div class="story-result">
+          <div class="story-result-label">Результат</div>
+          <div class="story-result-value">1.8М → 380К/мес за 12 месяцев</div>
+          <div class="story-result-sub">Окупил за 7 месяцев · Работает 5 ч/день · Давление — 125/80</div>
+        </div>
+        <a href="#cta" class="btn btn-primary">Читать историю Андрея →</a>
+      </div>
+      <div class="story-photo">
+        <span style="font-size:64px;opacity:.4;">👤</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEARS ─────────────────────────────────────── -->
+<section class="fears-section">
+  <div class="container">
+    <div class="fears-header">
+      <h2>Вы думали об этом?</h2>
+    </div>
+    <p class="fears-sub">Мы разобрали главные страхи, которые мешают сделать первый шаг.</p>
+    <div class="fears-grid">
+      <div class="fear-card">
+        <div class="fear-icon">⏰</div>
+        <h3>«Кто возьмёт финдира в 50?»</h3>
+        <p>Страх потерять статус и оказаться невостребованным — самый частый среди топ-менеджеров 45+.</p>
+      </div>
+      <div class="fear-card">
+        <div class="fear-icon">🛡️</div>
+        <h3>«2 миллиона — это всё, что у нас есть»</h3>
+        <p>Риск потерять семейные накопления и остаться ни с чем. Именно поэтому герои показывают реальные цифры ROI.</p>
+      </div>
+      <div class="fear-card">
+        <div class="fear-icon">👨‍👩‍👦</div>
+        <h3>«Жена скажет — ты спятил»</h3>
+        <p>Непонимание близких. Из 6 героев у 4 жена была категорически против в начале. И у всех 4 она передумала.</p>
+      </div>
+    </div>
+    <div class="fears-conclusion">
+      <strong>Андрей думал то же самое. И не только он.</strong> В историях — как каждый из них прошёл через эти страхи.
+    </div>
+  </div>
+</section>
+
+<!-- ── TIMELINE ───────────────────────────────────── -->
+<section class="timeline-section" id="program">
+  <div class="container">
+    <div class="timeline-header">
+      <div class="section-eyebrow">Программа</div>
+      <h2>7 дней. 10 историй. 0 продаж.</h2>
+    </div>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-dot">
+          <div class="dot"></div>
+          <div class="day-label">День 0</div>
+        </div>
+        <div class="timeline-content">
+          <h3>Андрей, 47 лет — финансовый директор банка</h3>
+          <p>22 года в найме. Давление 150/95. Решил действовать.</p>
+          <span class="timeline-badge">1.8М → 380К/мес за 12 мес</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot">
+          <div class="dot"></div>
+          <div class="day-label">День 1</div>
+        </div>
+        <div class="timeline-content">
+          <h3>Виктор, 47 лет — директор филиала банка</h3>
+          <p>Узнал, что его филиал закрывают. Вложил последние 1.5М.</p>
+          <span class="timeline-badge">1.5М → 290К/мес за 9 мес</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot">
+          <div class="dot"></div>
+          <div class="day-label">День 2</div>
+        </div>
+        <div class="timeline-content">
+          <h3>Игорь, 46 лет — главный инженер</h3>
+          <p>Здоровье подводило. Нашёл формат на 5 часов в день.</p>
+          <span class="timeline-badge">1.2М → 210К/мес · 5 ч/день</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot">
+          <div class="dot" style="background: var(--light-accent); box-shadow: 0 0 0 1px var(--light-accent);"></div>
+          <div class="day-label">День 3</div>
+        </div>
+        <div class="timeline-special">
+          <h3 style="font-size:17px;font-weight:600;margin-bottom:6px;">Взгляд жены — история Марины</h3>
+          <p style="font-size:14px;color:var(--text-muted);">Единственная история от лица женщины. Для двоих. Марина была против 3 недели — сейчас ведёт бухгалтерию.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot">
+          <div class="dot"></div>
+          <div class="day-label">День 6</div>
+        </div>
+        <div class="timeline-content">
+          <h3>Сводка: «6 историй в цифрах»</h3>
+          <p>Средние: 1.7М вложений · 9 мес окупаемость · 310К/мес доход · 5.2 ч/день</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot">
+          <div class="dot" style="background: var(--accent); box-shadow: 0 0 0 4px rgba(254,175,65,0.2);"></div>
+          <div class="day-label">День 7</div>
+        </div>
+        <div class="timeline-content">
+          <h3>«А если это ваша история?»</h3>
+          <p>Переход к персональной диагностике — Компас (990₽, 15 минут).</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FINAL CTA ──────────────────────────────────── -->
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="section-eyebrow">Начать сейчас</div>
+    <h2>Получите первую историю<br>прямо сейчас</h2>
+    <p>Бесплатно. Без звонков. Без продаж.</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn btn-primary btn-lg">
+        <svg class="icon-tg" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+        Получить в Telegram
+      </a>
+      <a href="#" class="btn btn-outline btn-lg">
+        <svg class="icon-mail" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        Получить на email
+      </a>
+    </div>
+    <p class="cta-note">6 из 6 героев сказали: «Лучшее решение в жизни». Стоимость входа — 0 ₽.</p>
+  </div>
+</section>
+
+<!-- ── FOOTER ────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="logo">
+        <img src="logo.png" alt="DEAL">
+      </div>
+      <p class="footer-copy">© 2024 DEAL. Все права защищены.</p>
+      <div class="footer-links">
+        <a href="#">Политика конфиденциальности</a>
+        <a href="#">Условия использования</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Анимация входа карточек при загрузке ──────────
+  function revealCards() {
+    const cards = document.querySelectorAll('.persona-card');
+    const strip = document.getElementById('liveStrip');
+    // Небольшая задержка после загрузки страницы
+    setTimeout(() => {
+      cards.forEach(c => c.classList.add('visible'));
+      if (strip) strip.classList.add('visible');
+    }, 300);
+  }
+  document.addEventListener('DOMContentLoaded', revealCards);
+
+  // ── Параллакс на движение мыши ────────────────────
+  (function () {
+    const hero   = document.getElementById('hero');
+    const blobs  = document.querySelectorAll('.hero-blob');
+    const dots   = document.getElementById('heroDots');
+    const cards  = document.querySelectorAll('.persona-card');
+
+    let cx = 0, cy = 0;   // текущее смещение (lerp)
+    let tx = 0, ty = 0;   // целевое смещение
+
+    document.addEventListener('mousemove', (e) => {
+      const rect = document.documentElement.getBoundingClientRect();
+      // Нормализуем: -1 … +1 от центра экрана
+      tx = (e.clientX / window.innerWidth  - 0.5) * 2;
+      ty = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
+
+    function animate() {
+      // Плавное сглаживание (lerp)
+      cx += (tx - cx) * 0.06;
+      cy += (ty - cy) * 0.06;
+
+      // Блобы — разная глубина
+      if (blobs[0]) blobs[0].style.transform = `translate(${cx * -28}px, ${cy * -18}px)`;
+      if (blobs[1]) blobs[1].style.transform = `translate(${cx *  18}px, ${cy *  22}px)`;
+      if (blobs[2]) blobs[2].style.transform = `translate(${cx * -12}px, ${cy * -28}px)`;
+
+      // Точечная сетка — лёгкое смещение
+      if (dots) dots.style.transform = `translate(${cx * 8}px, ${cy * 8}px)`;
+
+      // Карточки — мягкий 3D-наклон
+      cards.forEach((card, i) => {
+        const depth = (i % 2 === 0) ? 1 : -1;
+        const rx = cy * 4 * depth;
+        const ry = cx * -5 * depth;
+        card.style.transform = card.matches(':hover')
+          ? 'translateY(-4px)'
+          : `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(0)`;
+      });
+
+      requestAnimationFrame(animate);
+    }
+    animate();
+  })();
+
+  // ── Счётчик в live-strip (имитация живого роста) ──
+  (function () {
+    const el = document.querySelector('.live-text strong');
+    if (!el) return;
+    let count = 847;
+    setInterval(() => {
+      if (Math.random() < 0.3) {
+        count += Math.floor(Math.random() * 3) + 1;
+        el.textContent = count.toLocaleString('ru') + ' человек';
+      }
+    }, 4000);
+  })();
+</script>
+</body>
+</html>
