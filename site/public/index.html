@@ -837,23 +837,31 @@
       h1 { font-size: 32px; letter-spacing: -0.5px; }
       .hero { padding: 100px 0 60px; }
 
-      /* Шапка: уменьшаем высоту */
+      /* Шапка */
       header { height: 64px; }
 
-      /* Переключаем на 2 колонки: лого + кнопка */
+      /* Grid: лого слева, кнопка справа */
       .header-inner {
-        grid-template-columns: auto 1fr auto;
-        gap: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        height: 64px;
       }
       .header-nav { display: none; }
 
       /* Логотип */
-      .logo { height: auto; align-items: center; }
+      .logo {
+        height: auto;
+        display: flex;
+        align-items: center;
+      }
       .logo img { height: 36px; }
 
       /* Кнопка */
       .header-cta {
         height: auto;
+        display: flex;
         align-items: center;
       }
       .header-cta a {
